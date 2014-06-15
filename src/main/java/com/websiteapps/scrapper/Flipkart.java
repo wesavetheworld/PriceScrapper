@@ -1,4 +1,4 @@
-package com.websiteapps.scrapper.flipkart;
+package com.websiteapps.scrapper;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,6 +11,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import com.websiteapps.scrapper.domain.Product;
+import com.websiteapps.scrapper.domain.ProductSource;
 
 public class Flipkart {
 	private String baseUrl = "http://www.flipkart.com";
@@ -37,24 +38,25 @@ public class Flipkart {
 		Document document = Jsoup.connect(searchUrl).timeout(30 * 1000).get();
 		Elements productsContainer = document.select("div.product-unit");
 		for (Element element : productsContainer) {
-			try{				
+			try {
 				String productName = element.getElementsByAttributeValue("data-tracking-id", "prd_title").attr("title");
 				String oldPriceWithDiscount = element.getElementsByAttributeValue("class", "pu-discount fk-font-11").text();
 				String newPrice = element.getElementsByAttributeValue("class", "pu-final").text();
-				if(newPrice.contains("Rs.")){
+				if (newPrice.contains("Rs.")) {
 					newPrice = newPrice.trim();
 					newPrice = newPrice.substring(3, newPrice.length()).trim();
 				}
 				String description = element.getElementsByAttributeValue("class", "pu-usp").html();
-				String url = element.getElementsByAttributeValue("data-tracking-id","prd_title").attr("href");
+				String url = element.getElementsByAttributeValue("data-tracking-id", "prd_title").attr("href");
 				Product product = new Product();
+				product.setSource(ProductSource.FLIPKART);
 				product.setName(productName.trim());
-				product.setOldPrice(oldPriceWithDiscount);
-				product.setNewprice(Integer.parseInt(newPrice));
+				product.setOffer(oldPriceWithDiscount);
+				product.setPrice(Integer.parseInt(newPrice));
 				product.setDesciption(description);
 				product.setUrl(baseUrl + url);
 				products.add(product);
-			}catch(Exception e){
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}

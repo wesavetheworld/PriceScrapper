@@ -8,7 +8,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import com.websiteapps.scrapper.domain.Product;
-import com.websiteapps.scrapper.flipkart.Flipkart;
 
 public class Test {
 	public void testScrapper() {

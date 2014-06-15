@@ -1,11 +1,13 @@
 package com.websiteapps.scrapper.domain;
 
-public class Product implements Comparable {
+public class Product implements Comparable<Product> {
 	String name;
-	String oldPrice;
-	Integer newprice;
+	String offer;
+	Integer price;
 	String desciption;
 	String url;
+	ProductSource source;
+	String img;
 
 	public String getName() {
 		return name;
@@ -15,20 +17,20 @@ public class Product implements Comparable {
 		this.name = name;
 	}
 
-	public String getOldPrice() {
-		return oldPrice;
+	public String getOffer() {
+		return offer;
 	}
 
-	public void setOldPrice(String oldPrice) {
-		this.oldPrice = oldPrice;
+	public void setOffer(String offer) {
+		this.offer = offer;
 	}
 
-	public Integer getNewprice() {
-		return newprice;
+	public Integer getPrice() {
+		return price;
 	}
 
-	public void setNewprice(Integer newprice) {
-		this.newprice = newprice;
+	public void setPrice(Integer price) {
+		this.price = price;
 	}
 
 	public String getDesciption() {
@@ -47,14 +49,27 @@ public class Product implements Comparable {
 		this.url = url;
 	}
 
+	public ProductSource getSource() {
+		return source;
+	}
+
+	public void setSource(ProductSource source) {
+		this.source = source;
+	}
+
+	public String getImg() {
+		return img;
+	}
+
+	public void setImg(String img) {
+		this.img = img;
+	}
+
 	@Override
-	public int compareTo(Object o) {
-		// TODO Auto-generated method stub
-		Product product = (Product) o;
-		if (this.newprice > product.newprice) {
+	public int compareTo(Product product) {
+		if (this.price > product.price) {
 			return 1;
 		}
 		return 0;
-
 	}
 }

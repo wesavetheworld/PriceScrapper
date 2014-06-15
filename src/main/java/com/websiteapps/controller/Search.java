@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.websiteapps.scrapper.Flipkart;
 import com.websiteapps.scrapper.domain.Product;
-import com.websiteapps.scrapper.flipkart.Flipkart;
 
 @Controller
 public class Search {

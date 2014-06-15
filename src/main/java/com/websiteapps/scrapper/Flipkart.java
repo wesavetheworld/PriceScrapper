@@ -13,7 +13,7 @@ import org.jsoup.select.Elements;
 import com.websiteapps.scrapper.domain.Product;
 import com.websiteapps.scrapper.domain.ProductSource;
 
-public class Flipkart {
+public class Flipkart extends BaseScrapper {
 	private String baseUrl = "http://www.flipkart.com";
 	private String product;
 
@@ -23,7 +23,7 @@ public class Flipkart {
 
 	public String init() throws Exception {
 		System.out.println("Initializing Flipkart Scrapper..");
-		Document doc = Jsoup.connect("http://www.flipkart.com").timeout(30 * 1000).get();
+		Document doc = doGet(baseUrl);
 		String as = doc.select("input[id$=as]").val();
 		String asshow = doc.select("input[id$=as-show]").val();
 		String oTracker = doc.select("input[id$=searchTracker]").val();
@@ -31,11 +31,11 @@ public class Flipkart {
 	}
 
 	public List<Product> scrap() throws Exception {
-		System.out.println("Searcing for Product : " + product);
+		System.out.println("Flipkart Searcing for Product : " + product);
 		List<Product> products = new ArrayList<Product>();
 		String searchUrl = init();
-		System.out.println("Searcing...");
-		Document document = Jsoup.connect(searchUrl).timeout(30 * 1000).get();
+		System.out.println("Flipkart Searcing...");
+		Document document = doGet(searchUrl);
 		Elements productsContainer = document.select("div.product-unit");
 		for (Element element : productsContainer) {
 			try {
@@ -48,20 +48,13 @@ public class Flipkart {
 				}
 				String description = element.getElementsByAttributeValue("class", "pu-usp").html();
 				String url = element.getElementsByAttributeValue("data-tracking-id", "prd_title").attr("href");
-				Product product = new Product();
-				product.setSource(ProductSource.FLIPKART);
-				product.setName(productName.trim());
-				product.setOffer(oldPriceWithDiscount);
-				product.setPrice(Integer.parseInt(newPrice));
-				product.setDesciption(description);
-				product.setUrl(baseUrl + url);
+				Product product = buildProduct(productName, ProductSource.FLIPKART, oldPriceWithDiscount, newPrice, description, baseUrl + url, null);
 				products.add(product);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 		System.out.println("No. of Products Found : " + products.size());
-		Collections.sort(products);
 		return products;
 	}
 

@@ -36,12 +36,12 @@
 					$.get(
 							url,
 							function(response) {
-								var table ="<table class='table table-condensed'><thead ><tr><th style='width:40%'>Name</th><th style='width:15%'>Offer</th><th style='width:15%'>Price</th><th style='width:30%'>Description</th></tr></thead><tbody>";
+								var table ="<table class='table table-condensed'><thead ><tr><th style='width:5%'>Source</th><th style='width:35%'>Name</th><th style='width:15%'>Offer</th><th style='width:15%'>Price</th><th style='width:30%'>Description</th></tr></thead><tbody>";
 								var tbody = "";
 								if(response.length > 0){
 									$.each(response, function(idx, product) {
 										$("#thead").css("display", "block");
-										tbody +="<tr><td><a href='"+product.url+"'>"
+										tbody +="<tr><td>"+product.source+"</td><td><a href='"+product.url+"'>"
 														+ product.name
 														+ "</a></td><td>"
 														+ product.offer

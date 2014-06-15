@@ -3,7 +3,7 @@ package com.websiteapps.scrapper.domain;
 public class Product implements Comparable<Product> {
 	String name;
 	String offer;
-	Integer price;
+	Float price;
 	String desciption;
 	String url;
 	ProductSource source;
@@ -25,11 +25,11 @@ public class Product implements Comparable<Product> {
 		this.offer = offer;
 	}
 
-	public Integer getPrice() {
+	public Float getPrice() {
 		return price;
 	}
 
-	public void setPrice(Integer price) {
+	public void setPrice(Float price) {
 		this.price = price;
 	}
 

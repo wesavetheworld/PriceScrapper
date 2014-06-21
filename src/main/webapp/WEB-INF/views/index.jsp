@@ -10,49 +10,42 @@
 <body>
 	<div class="container">
 		<div class="row" style="margin-top: 5%">
-			<div class="col-xs-2"></div>
-			<div class="col-xs-8">
+			<div class="col-md-2"></div>
+			<div class="col-md-8">
 				<form class="form-inline" role="form">
-					<div class="form-group ">
+					<div class="form-group" style="width: 80% !important;">
 						<label class="sr-only" for="product">Product</label> <input
 							type="text" class="form-control" id="product"
-							placeholder="Product Name">
+							placeholder="Product Name" style="width: 100% !important;">
 					</div>
-					<button id="submit" type="button" class="btn btn-default">Search</button>
+					<button id="submit" type="button" class="btn btn-primary">Search</button>
 				</form>
 			</div>
-			<div class="col-xs-2"></div>
 		</div>
-		<div id="result" class="row" style="bacground-color: grey;"></div>
 	</div>
+	<div class="container" id="result"></div>
 </body>
 <script>
 	$("#submit").click(
 			function() {
 				if($("#product").val() != ""){
-					var url = "search/"
-							+ $("#product").val();
+					var url = "search/"+ $("#product").val();
 					$("#submit").text("Please Wait..");
 					$.get(
 							url,
 							function(response) {
-								var table ="<table class='table table-condensed'><thead ><tr><th style='width:5%'>Source</th><th style='width:35%'>Name</th><th style='width:15%'>Offer</th><th style='width:15%'>Price</th><th style='width:30%'>Description</th></tr></thead><tbody>";
-								var tbody = "";
 								if(response.length > 0){
+									var result = "";
 									$.each(response, function(idx, product) {
-										$("#thead").css("display", "block");
-										tbody +="<tr><td>"+product.source+"</td><td><a href='"+product.url+"'>"
-														+ product.name
-														+ "</a></td><td>"
-														+ product.offer
-														+ "</td><td> Rs. "
-														+ product.price
-														+ "</td><td>"
-														+ product.desciption
-														+ "</td></tr>";
+										result += "<div class='row' style='padding-top:5px;padding-bottom:5px;'><div class='col-md-12'>";
+										result += "<div class='col-xs-2'>";
+										result += "<img src="+product.img+" /></div>";
+										result += "<div class='col-xs-10'>";
+										result += "<h4><a href='"+product.url+"'>"+ product.name+ "</a></h4>";
+										result += "<div class='col-xs-12'><div class='col-xs-2'><h5> Rs."+product.price+"</h5></div><div class='col-xs-8'>"+product.desciption+"</div><div class='col-xs-2'><sub>"+product.source+"</sub></div></div>";
+										result += "</div></div></div>";
 									});
-									table = table + tbody +"</tbody></table>";
-									$("#result").html(table);	
+									$("#result").html(result);	
 								}else{
 									$("#result").html("<h3 align='center'>Sorry no products were found.</h3>");
 								}

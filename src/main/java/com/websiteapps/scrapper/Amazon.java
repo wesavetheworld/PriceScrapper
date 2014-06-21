@@ -1,7 +1,5 @@
 package com.websiteapps.scrapper;
 
-import java.io.File;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,15 +7,21 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import com.websiteapps.scrapper.domain.Product;
-import com.websiteapps.scrapper.domain.ProductSource;
+import com.websiteapps.domain.Product;
+import com.websiteapps.domain.ProductSource;
 
-public class Amazon extends BaseScrapper {
+/**
+ * @author Digvijay
+ * 
+ */
+public class Amazon extends BaseScrapper implements Runnable {
 	private String baseUrl = "http://www.amazon.in";
 	private String product;
+	private CrawlEngine engine;
 
-	public Amazon(String product) {
+	public Amazon(String product, CrawlEngine engine) {
 		this.product = product;
+		this.engine = engine;
 	}
 
 	public String init() throws Exception {
@@ -38,35 +42,47 @@ public class Amazon extends BaseScrapper {
 		return baseUrl + subUrl + "?url=" + searchIn + "&field-keywords=" + product + "";
 	}
 
-	public List<Product> scrap() throws Exception {
+	public List<Product> scrap() {
 		System.out.println("Amazon Searcing for Product : " + product);
 		List<Product> products = new ArrayList<Product>();
-		String searchUrl = init();
-		System.out.println("Amazon Searcing...");
-		Document document = doGet(searchUrl);
-		Elements productsContainer1 = document.getElementsByAttributeValueContaining("class", "prod celwidget");
-		int count = 0;
-		for (Element element : productsContainer1) {
-			try {
-				Element nameAndUrl = element.getElementsByClass("newaps").first();
-				String url = nameAndUrl.child(0).attr("href");
-				String name = nameAndUrl.text();
-				String img = element.getElementsByClass("productImage").attr("src");
-				Element li = element.getElementsByClass("newp").first();
-				String oldPrice = ""; 
-				try{
-					oldPrice = li.getElementsByClass("grey").text();
-				}catch(Exception e){
-					
-				}			
-				String newPrice = li.getElementsByAttributeValueContaining("class", "red").text();
-				String description = element.getElementsByAttributeValueContaining("class", "rsltR dkGrey").first().html();				
-				Product product = buildProduct(name, ProductSource.AMAZON, oldPrice.trim(), newPrice.trim(), description, url, img);
-				products.add(product);
-			} catch (Exception e) {
-				e.printStackTrace();
+		try {
+			String searchUrl = init();
+			System.out.println("Amazon Searcing...");
+			Document document = doGet(searchUrl);
+			Elements productsContainer1 = document.getElementsByAttributeValueContaining("class", "prod celwidget");
+			int srno = 0;
+			for (Element element : productsContainer1) {
+				try {
+					Element nameAndUrl = element.getElementsByClass("newaps").first();
+					String url = nameAndUrl.child(0).attr("href");
+					String name = nameAndUrl.text();
+					String img = element.getElementsByClass("productImage").attr("src");
+					Element li = element.getElementsByClass("newp").first();
+					String oldPrice = "";
+					try {
+						oldPrice = li.getElementsByClass("grey").text();
+					} catch (Exception e) {
+
+					}
+					String newPrice = li.getElementsByAttributeValueContaining("class", "red").text();
+					String description = element.getElementsByAttributeValueContaining("class", "rsltR dkGrey").first().html();
+					Product product = buildProduct(++srno, name, ProductSource.AMAZON, oldPrice.trim(), newPrice.trim(), description, url, img);
+					products.add(product);
+				} catch (Exception e) {
+					System.out.println("Amazon : " + e.getMessage());
+				}
 			}
+			System.out.println("Amazon no. of Products Found : " + products.size());
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+
 		return products;
+	}
+
+	@Override
+	public void run() {
+		List<Product> products = scrap();
+		engine.addProducts(products);
 	}
 }

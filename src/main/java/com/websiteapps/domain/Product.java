@@ -1,13 +1,26 @@
-package com.websiteapps.scrapper.domain;
+package com.websiteapps.domain;
 
+/**
+ * @author Digvijay
+ *
+ */
 public class Product implements Comparable<Product> {
-	String name;
-	String offer;
-	Float price;
-	String desciption;
-	String url;
-	ProductSource source;
-	String img;
+	private int srno;
+	private String name;
+	private String offer;
+	private Float price;
+	private String desciption;
+	private String url;
+	private ProductSource source;
+	private String img;
+
+	public int getSrno() {
+		return srno;
+	}
+
+	public void setSrno(int srno) {
+		this.srno = srno;
+	}
 
 	public String getName() {
 		return name;

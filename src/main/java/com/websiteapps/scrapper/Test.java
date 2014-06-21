@@ -7,8 +7,12 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import com.websiteapps.scrapper.domain.Product;
+import com.websiteapps.domain.Product;
 
+/**
+ * @author Digvijay
+ *
+ */
 public class Test {
 	public void testScrapper() {
 		try {
@@ -41,7 +45,7 @@ public class Test {
 
 	public static void main(String... args) {
 		try {
-			Flipkart obj = new Flipkart("Dell Vostro 2520 Laptop");
+			Flipkart obj = new Flipkart("Dell Vostro 2520 Laptop",null);
 			List<Product> products = obj.scrap();
 			System.out.println(products.size());
 			System.out.println(products);

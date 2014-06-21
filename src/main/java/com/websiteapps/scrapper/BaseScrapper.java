@@ -3,16 +3,21 @@ package com.websiteapps.scrapper;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import com.websiteapps.scrapper.domain.Product;
-import com.websiteapps.scrapper.domain.ProductSource;
+import com.websiteapps.domain.Product;
+import com.websiteapps.domain.ProductSource;
 
+/**
+ * @author Digvijay
+ *
+ */
 public abstract class BaseScrapper {
 	public Document doGet(String url) throws Exception {
 		return Jsoup.connect(url).timeout(30 * 1000).get();
 	}
 
-	public Product buildProduct(String name, ProductSource source, String offer, String price, String description, String url, String img) {
+	public Product buildProduct(int srno, String name, ProductSource source, String offer, String price, String description, String url, String img) {
 		Product product = new Product();
+		product.setSrno(srno);
 		product.setName(name.trim());
 		product.setSource(source);
 		product.setOffer(offer);
@@ -22,10 +27,10 @@ public abstract class BaseScrapper {
 		product.setImg(img);
 		return product;
 	}
-	
-	public Float cleanPriceValue(String value){
+
+	public Float cleanPriceValue(String value) {
 		value = value.replace("\u00a0", "");
-		value = value.replace(",","");
+		value = value.replace(",", "");
 		return new Float(value);
 	}
 }

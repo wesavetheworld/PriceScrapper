@@ -9,10 +9,21 @@ public class Product implements Comparable<Product> {
 	private String name;
 	private String offer;
 	private Float price;
-	private String desciption;
+	private String description;
 	private String url;
 	private ProductSource source;
 	private String img;
+	
+	public Product(int srno, String name, String offer, Float price, String description, String url, ProductSource source, String img) {
+		this.srno = srno;
+		this.name = name;
+		this.offer = offer;
+		this.price = price;
+		this.description = description;
+		this.url = url;
+		this.source = source;
+		this.img = img;
+	}
 
 	public int getSrno() {
 		return srno;
@@ -46,12 +57,12 @@ public class Product implements Comparable<Product> {
 		this.price = price;
 	}
 
-	public String getDesciption() {
-		return desciption;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setDesciption(String desciption) {
-		this.desciption = desciption;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public String getUrl() {

@@ -1,7 +1,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 <head>
-<title>Flipkart : search product with lowest price</title>
+<title>Flipkart | Amazon : search product with lowest price</title>
 <link href="<c:url value="/resources/css/bootstrap.min.css" />"
 	rel="stylesheet">
 <script src="<c:url value="/resources/js/jquery-2.1.1.min.js" />"></script>
@@ -42,7 +42,7 @@
 										result += "<img src="+product.img+" /></div>";
 										result += "<div class='col-xs-10'>";
 										result += "<h4><a href='"+product.url+"'>"+ product.name+ "</a></h4>";
-										result += "<div class='col-xs-12'><div class='col-xs-2'><h5> Rs."+product.price+"</h5></div><div class='col-xs-8'>"+product.desciption+"</div><div class='col-xs-2'><sub>"+product.source+"</sub></div></div>";
+										result += "<div class='col-xs-12'><div class='col-xs-2'><h5> Rs."+product.price+"</h5></div><div class='col-xs-8'>"+product.description+"</div><div class='col-xs-2'><sub>"+product.source+"</sub></div></div>";
 										result += "</div></div></div>";
 									});
 									$("#result").html(result);	

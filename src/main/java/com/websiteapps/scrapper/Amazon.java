@@ -14,14 +14,10 @@ import com.websiteapps.domain.ProductSource;
  * @author Digvijay
  * 
  */
-public class Amazon extends BaseScrapper implements Runnable {
-	private String baseUrl = "http://www.amazon.in";
-	private String product;
-	private CrawlEngine engine;
+public class Amazon extends BaseScrapper {
 
 	public Amazon(String product, CrawlEngine engine) {
-		this.product = product;
-		this.engine = engine;
+		super(product, engine, "http://www.amazon.in");
 	}
 
 	public String init() throws Exception {
@@ -31,7 +27,7 @@ public class Amazon extends BaseScrapper implements Runnable {
 		String searchIn = "";
 		Elements option = doc.select("#searchDropdownBox > option");
 		for (Element ele : option) {
-			if (option.attr("selected").equals("selected")) {
+			if (ele.attr("selected").equals("selected")) {
 				searchIn = option.attr("value");
 				break;
 			}
@@ -42,6 +38,7 @@ public class Amazon extends BaseScrapper implements Runnable {
 		return baseUrl + subUrl + "?url=" + searchIn + "&field-keywords=" + product + "";
 	}
 
+	@Override
 	public List<Product> scrap() {
 		System.out.println("Amazon Searcing for Product : " + product);
 		List<Product> products = new ArrayList<Product>();
@@ -66,10 +63,9 @@ public class Amazon extends BaseScrapper implements Runnable {
 					}
 					String newPrice = li.getElementsByAttributeValueContaining("class", "red").text();
 					String description = element.getElementsByAttributeValueContaining("class", "rsltR dkGrey").first().html();
-					Product product = buildProduct(++srno, name, ProductSource.AMAZON, oldPrice.trim(), newPrice.trim(), description, url, img);
-					products.add(product);
+					products.add(new Product(++srno, name, oldPrice.trim(), cleanPriceValue(newPrice.trim()), description, url, ProductSource.AMAZON, img));
 				} catch (Exception e) {
-					System.out.println("Amazon : " + e.getMessage());
+					System.out.println("Error Amazon : " + e.getMessage());
 				}
 			}
 			System.out.println("Amazon no. of Products Found : " + products.size());
@@ -78,11 +74,5 @@ public class Amazon extends BaseScrapper implements Runnable {
 		}
 
 		return products;
-	}
-
-	@Override
-	public void run() {
-		List<Product> products = scrap();
-		engine.addProducts(products);
 	}
 }

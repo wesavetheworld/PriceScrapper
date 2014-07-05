@@ -14,14 +14,10 @@ import com.websiteapps.domain.ProductSource;
  * @author Digvijay
  * 
  */
-public class Flipkart extends BaseScrapper implements Runnable {
-	private String baseUrl = "http://www.flipkart.com";
-	private String product;
-	private CrawlEngine engine;
+public class Flipkart extends BaseScrapper {
 
 	public Flipkart(String product, CrawlEngine engine) {
-		this.product = product;
-		this.engine = engine;
+		super(product, engine, "http://www.flipkart.com");
 	}
 
 	public String init() throws Exception {
@@ -33,6 +29,7 @@ public class Flipkart extends BaseScrapper implements Runnable {
 		return baseUrl + "/search?q=" + product + "&as=" + as + "&as-show=" + asshow + "&otracker=" + oTracker;
 	}
 
+	@Override
 	public List<Product> scrap() {
 		List<Product> products = new ArrayList<Product>();
 		try {
@@ -54,8 +51,7 @@ public class Flipkart extends BaseScrapper implements Runnable {
 					String description = element.getElementsByAttributeValue("class", "pu-usp").html();
 					String url = element.getElementsByAttributeValue("data-tracking-id", "prd_title").attr("href");
 					String img = element.getElementsByAttributeValueContaining("class", "pu-image").first().child(0).attr("data-src");
-					Product product = buildProduct(++srno, productName, ProductSource.FLIPKART, oldPriceWithDiscount, newPrice, description, baseUrl + url, img);
-					products.add(product);
+					products.add(new Product(++srno, productName, oldPriceWithDiscount, cleanPriceValue(newPrice), description, baseUrl + url, ProductSource.FLIPKART, img));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -66,16 +62,4 @@ public class Flipkart extends BaseScrapper implements Runnable {
 		}
 		return products;
 	}
-
-	@Override
-	public void run() {
-		List<Product> products = scrap();
-		engine.addProducts(products);
-	}
-	
-	public static void main(String... args){
-		Flipkart obj = new Flipkart("Moto G", null);
-		obj.scrap();
-	}
-
 }

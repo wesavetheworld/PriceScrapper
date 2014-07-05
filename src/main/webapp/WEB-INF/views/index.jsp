@@ -51,8 +51,7 @@
 								}
 								
 							}).fail(function(response, status, error) {
-						alert(error);
-						alert(status);
+								alert("Internal Error");
 					}).always(function(){
 						$("#submit").text("Search");
 					});

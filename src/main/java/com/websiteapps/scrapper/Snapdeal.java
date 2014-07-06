@@ -11,7 +11,7 @@ import com.websiteapps.domain.Product;
 /**
  * @author Digvijay
  */
-public class Snapdeal extends BaseScrapper{
+public class Snapdeal extends BaseScrapper{ 
 
 	public Snapdeal(String product, CrawlEngine engine) {
 		super(product, engine,"http://www.snapdeal.com");

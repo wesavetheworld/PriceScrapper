@@ -35,7 +35,7 @@ public class Amazon extends BaseScrapper {
 		if (searchIn.equals("")) {
 			throw new RuntimeException("Fail to Init Amazon");
 		}
-		return baseUrl + subUrl + "?url=" + searchIn + "&field-keywords=" + product + "";
+		return baseUrl + subUrl + "?url=" + searchIn + "&field-keywords=" + encode(product);
 	}
 
 	@Override

@@ -8,28 +8,41 @@ import com.websiteapps.domain.Product;
 
 /**
  * @author Digvijay
+ *
  */
 public class Filter {
 	public static void filter(List<Product> products, String searchProduct) {
-
 		List<Product> filteredProducts = new ArrayList<Product>();
 		Collections.sort(products);
 		for (Product product : products) {
-			if (isNameBiggerThanSearchName(product.getName(), searchProduct)) {
-				if (!isSearchNameMatcing(product.getName(), searchProduct)) {
-					continue;
-				}
+			if (!isSearchNameMatcing(product.getName(), searchProduct)) {
+				continue;
 			}
 			filteredProducts.add(product);
 		}
+		sortProducts(filteredProducts, searchProduct);
 		products.clear();
 		products.addAll(filteredProducts);
+	}
+
+	public static void sortProducts(List<Product> products, String searchProduct) {
+		List<Product> bestMatch = new ArrayList<Product>();
+		for (Product product : products) {
+			if (product.getSrno() < 5 && !isNameBiggerThanSearchName(product.getName(), searchProduct)) {
+				bestMatch.add(product);
+			}
+		}
+		Collections.sort(bestMatch);
+		products.removeAll(bestMatch);
+		bestMatch.addAll(products);
+		products.clear();
+		products.addAll(bestMatch);
 	}
 
 	public static boolean isNameBiggerThanSearchName(String name1, String name2) {
 		int productNameCount = name1.length();
 		int searchNameCount = name2.length();
-		if (productNameCount - searchNameCount > 15) {
+		if (productNameCount - searchNameCount > 30) {
 			return true;
 		}
 		return false;

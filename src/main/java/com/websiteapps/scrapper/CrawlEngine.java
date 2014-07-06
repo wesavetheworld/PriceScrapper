@@ -16,7 +16,7 @@ public class CrawlEngine {
 	List<Product> products = new ArrayList<Product>();
 
 	synchronized void addProducts(List<Product> products) {
-		this.products.addAll(products);
+		this.products.addAll(products); 
 	}
 
 	public List<BaseScrapper> initCrawler(String product) {

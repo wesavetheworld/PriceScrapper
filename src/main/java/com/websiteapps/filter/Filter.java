@@ -28,7 +28,9 @@ public class Filter {
 	public static void sortProducts(List<Product> products, String searchProduct) {
 		List<Product> bestMatch = new ArrayList<Product>();
 		for (Product product : products) {
-			if (product.getSrno() < 5 && !isNameBiggerThanSearchName(product.getName(), searchProduct)) {
+			if (product.getSrno() < 5 && !isNameBiggerThanSearchName(product.getName(), searchProduct, 30)) {
+				bestMatch.add(product);
+			} else if (!isNameBiggerThanSearchName(product.getName(), searchProduct, 15)) {
 				bestMatch.add(product);
 			}
 		}
@@ -39,10 +41,10 @@ public class Filter {
 		products.addAll(bestMatch);
 	}
 
-	public static boolean isNameBiggerThanSearchName(String name1, String name2) {
+	public static boolean isNameBiggerThanSearchName(String name1, String name2, int number) {
 		int productNameCount = name1.length();
 		int searchNameCount = name2.length();
-		if (productNameCount - searchNameCount > 30) {
+		if (productNameCount - searchNameCount > number) {
 			return true;
 		}
 		return false;

@@ -51,6 +51,9 @@ public class Flipkart extends BaseScrapper {
 					String description = element.getElementsByAttributeValue("class", "pu-usp").html();
 					String url = element.getElementsByAttributeValue("data-tracking-id", "prd_title").attr("href");
 					String img = element.getElementsByAttributeValueContaining("class", "pu-image").first().child(0).attr("data-src");
+					if(img.equals("") || img == null){
+						img = element.getElementsByAttributeValueContaining("class", "pu-image").first().child(0).attr("src");
+					}
 					products.add(new Product(++srno, productName, oldPriceWithDiscount, cleanPriceValue(newPrice), description, baseUrl + url, ProductSource.FLIPKART, img));
 				} catch (Exception e) {
 					e.printStackTrace();

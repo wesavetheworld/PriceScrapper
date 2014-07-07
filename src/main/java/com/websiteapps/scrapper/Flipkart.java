@@ -26,7 +26,7 @@ public class Flipkart extends BaseScrapper {
 		String as = doc.select("input[id$=as]").val();
 		String asshow = doc.select("input[id$=as-show]").val();
 		String oTracker = doc.select("input[id$=searchTracker]").val();
-		return baseUrl + "/search?q=" + encode(product) + "&as=" + as + "&as-show=" + asshow + "&otracker=" + oTracker;
+		return baseUrl + "/search?q=" + encode(product + "&as=" + as + "&as-show=" + asshow + "&otracker=" + oTracker);
 	}
 
 	@Override
